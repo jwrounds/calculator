@@ -3,6 +3,8 @@ const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const evaluate = document.querySelector('#equals');
 const clear = document.querySelector('#clear');
+const sqrRootButton = document.querySelector('.squareRoot');
+const exponentButton = document.querySelector('.exponent');
 
 const calculations = {
 
@@ -26,13 +28,13 @@ const calculations = {
 
   // exponential calculation
 
-  "calculateExponent": function(x, n, i = 1) {
+  "calculateExponent": function(x, n, i = 1, acc=x) {
     if (i < n) {
-      x *= x;
+      acc *= x;
       i++;
-      return this.calculateExponent(x, n, i);
+      return calculations.calculateExponent(x, n, i, acc);
     } else {
-      return x;
+      return acc;
     }
   }
 }
@@ -43,7 +45,8 @@ const cache = {
   "operand-1": null,
   "operand-2": null,
   "operation": null,
-  "operator": null
+  "operator": null,
+  "evaluated": false
 };
 
 // calculation helper function
@@ -57,6 +60,7 @@ const reset = () => {
   for (let key in cache) {
     cache[key] = null;
   }
+  cache['evaluated'] = false;
 }
 
 for (let i = 0; i < numberButtons.length; i++) {
@@ -66,7 +70,7 @@ for (let i = 0; i < numberButtons.length; i++) {
     if (screen.textContent === '' && cache['operand-1'] === null) {
       screen.textContent = e.target.value;
     } else {
-      // if operand already present, add number clicked to operand
+      // if operand or operator already present, add number clicked
       screen.textContent += e.target.value
     }   
   });
@@ -75,14 +79,14 @@ for (let i = 0; i < numberButtons.length; i++) {
 for (let i = 0; i < operatorButtons.length; i++) {
   operatorButtons[i].addEventListener('click', e => {
     // check to see if operand present on screen
-    if (screen.textContent !== '' && cache['operand-1'] === null) {
+    if ((screen.textContent !== '' && cache['operand-1'] === null) || cache['evaluated'] === true) {
       // set current operation in cache
       cache['operation'] = e.target.id;
       // set first operand in cache
       cache['operand-1'] = screen.textContent;
       // add operator to screen and set to cache
-      screen.textContent += e.target.textContent;
-      cache["operator"] = e.target.textContent;
+      screen.textContent += e.target.value;
+      cache["operator"] = e.target.value;
     }
   });
 }
@@ -97,6 +101,14 @@ evaluate.addEventListener('click', e => {
   let y = +cache['operand-2'];
   screen.textContent = operate(calculations[cache['operation']], x, y);
 
+  // set 'evaluated' to true
+  cache['evaluated'] = true;
+});
+
+sqrRootButton.addEventListener('click', e => {
+  screen.textContent = calculations.squareRoot(screen.textContent);
+  cache['evaluated'] = true;
+  cache['operand-1'] = screen.textContent;
 });
 
 clear.addEventListener('click', e => {

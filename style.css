@@ -33,7 +33,7 @@
 
 #screen {
   grid-area: screen;
-  width: 325px;
+  width: 350px;
   height: 75px;
   justify-self: center;
   text-align: end;
