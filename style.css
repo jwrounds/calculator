@@ -15,7 +15,10 @@
   justify-self: center;
   align-self: center;
   padding: 10px;
-  border: 5px solid black;
+  border: 5px solid #61708b;
+  border-radius: 15px;
+  background-color: rgb(118, 135, 153);
+  box-shadow: 5px 5px 5px #515c6e;
 }
 
 #calculator {
@@ -30,13 +33,22 @@
 
 #screen {
   grid-area: screen;
-  width: 350px;
+  width: 325px;
   height: 75px;
   justify-self: center;
   text-align: end;
-  font-size: 30px;
-  border: 2px solid black;
+ 
+  border: 2px solid #61708b;
+  border-radius: 5px;
   background-color: lightgray;
+  margin-top: 5px;
+}
+
+#text {
+  position: relative;
+  font-size: 30px;
+  right: 10px;
+  top: 20px;
 }
 
 #number-buttons {
@@ -54,5 +66,8 @@
 button {
   width: 50px;
   height: 50px;
-  margin: 5px; 
+  margin: 5px;
+  font-size: 16px;
+  box-shadow: 3px 3px 0px #414b5e; 
 }
+
